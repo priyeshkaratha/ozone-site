@@ -1,8 +1,16 @@
 ---
-draft: true
 sidebar_label: Recon
 ---
 
 # Directory Configurations for Recon
 
-**TODO:** File a subtask under [HDDS-9859](https://issues.apache.org/jira/browse/HDDS-9859) and complete this page or section.
+This section describes the directory-related configuration properties used by Ozone Recon.
+
+| Property Name                    | Description                                                                                                                                                                                                                          | Tags                            | Default/Example Value                                                            | Sample Value                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | -------------------------------------------------------------------------------- | -------------------------------- |
+| `ozone.recon.db.dir`             | Directory where Recon stores its metadata (RocksDB) and, by default, the embedded Derby SQL database. Recon creates the directory if it does not exist. Falls back to `ozone.metadata.dirs` if not defined.                          | OZONE, RECON, STORAGE, PERFORMANCE | Empty (creates directory if it doesn't exist)                                 | `/var/data/ozone/recon`          |
+| `ozone.recon.db.dirs.permissions` | Permissions for Recon metadata directories. Octal or symbolic format.                                                                                                                                                               |                                 | `700`                                                                            | `700`                            |
+| `ozone.recon.om.db.dir`          | Directory where Recon stores its local copy of the OM metadata snapshot. Recon creates the directory if it does not exist. Falls back to `ozone.metadata.dirs` if not defined.                                                       | OZONE, RECON, STORAGE           | Falls back to `ozone.metadata.dirs` if undefined                                 | `/var/data/ozone/recon/om`       |
+| `ozone.recon.scm.db.dirs`        | Directory where Recon stores its local copy of the SCM metadata snapshot. Used when `ozone.recon.scm.snapshot.enabled` is `true` (default). Contains datanode, pipeline, and container information synced from SCM.                  |                                 | Falls back to `ozone.metadata.dirs` if undefined                                 | `/var/data/ozone/recon/scm`      |
+| `ozone.recon.export.directory`   | Directory where Recon writes exported TAR files, such as CSVs for unhealthy containers. If empty, defaults to `{ozone.recon.db.dir}/exports` at runtime.                                                                             | OZONE, RECON                    | Resolved as `{ozone.recon.db.dir}/exports` if undefined                          | `/var/data/ozone/recon/exports`  |
+| `ozone.recon.sql.db.jdbc.url`    | JDBC URL for Recon's SQL database. By default, an embedded Derby database is created inside `ozone.recon.db.dir`. Change this property to use an external database.                                                                  | OZONE, RECON, STORAGE           | `jdbc:derby:${ozone.recon.db.dir}/ozone_recon_derby.db;create=true`              | `jdbc:derby:/data/recon/db`      |
